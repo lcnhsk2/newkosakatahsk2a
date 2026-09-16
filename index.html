@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-CN" translate="no">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="google" content="notranslate" />
+    <title>HSK2 KOSAKATA</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a2e;
+            font-family: 'SimSun', 'NSimSun', '宋体', serif;
+            padding: 12px;
+        }
+
+        .phone-frame {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 9 / 16;
+            background: linear-gradient(145deg, #f9d976 0%, #f39f86 30%, #fdfcfb 70%, #a8edea 100%);
+            border-radius: 36px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+            padding: 18px 16px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: -20%; right: -20%;
+            width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .phone-frame::after {
+            content: '';
+            position: absolute;
+            bottom: -10%; left: -10%;
+            width: 60%; height: 60%;
+            background: radial-gradient(circle, rgba(72, 219, 251, 0.20) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .header {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding-bottom: 6px;
+            flex-shrink: 0;
+        }
+        .header h1 {
+            font-size: clamp(18px, 4.2vw, 30px);
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #6a3093, #a044ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header .sub {
+            font-size: clamp(10px, 2.2vw, 16px);
+            color: #4a3a6a;
+            letter-spacing: 4px;
+            opacity: 0.9;
+            font-weight: 400;
+            margin-top: -2px;
+            text-shadow: 0 1px 4px rgba(255, 255, 255, 0.6);
+        }
+        .header .sub span {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 0 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .package-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: nowrap;
+        }
+        .package-btn {
+            font-family: inherit;
+            font-size: clamp(13px, 2.6vw, 17px);
+            font-weight: 700;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.85);
+            color: #3d2a5a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .package-btn:active { transform: scale(0.92); }
+        .package-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .package-select {
+            font-family: inherit;
+            font-size: clamp(11px, 2.3vw, 15px);
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.85);
+            color: #3d2a5a;
+            outline: none;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+            min-width: 0;
+            max-width: 260px;
+        }
+        .package-code {
+            font-size: clamp(11px, 2.3vw, 15px);
+            color: #3d2a5a;
+            font-weight: 700;
+            background: rgba(255,215,0,0.55);
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,215,0,0.6);
+            flex-shrink: 0;
+        }
+
+        .card-wrapper {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-height: 0;
+            perspective: 1200px;
+            margin: 6px 0 8px 0;
+            cursor: pointer;
+        }
+
+        .card-flipper {
+            position: relative;
+            width: 100%; height: 100%;
+            transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            border-radius: 28px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .card-flipper.flipped { transform: rotateY(180deg); }
+
+        .card-face {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 22px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .card-front {
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 245, 0.92));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        .card-front.is-marked {
+            border: 2px solid rgba(255, 200, 0, 0.8);
+            box-shadow: inset 0 0 40px rgba(255, 215, 0, 0.2), 0 0 24px rgba(255, 200, 0, 0.45);
+        }
+        .card-front .hanzi {
+            font-size: clamp(68px, 15vw, 120px);
+            font-weight: 700;
+            color: #1a0a2e;
+            text-shadow: 0 4px 20px rgba(255, 200, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.05);
+            line-height: 1.2;
+            text-align: center;
+            word-break: break-word;
+        }
+        .card-front .tap-hint {
+            position: absolute;
+            bottom: 18px;
+            font-size: clamp(11px, 2vw, 14px);
+            color: #8888aa;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 4px 18px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+        }
+        .card-front .index-badge {
+            position: absolute;
+            top: 14px; right: 16px;
+            font-size: clamp(13px, 2.4vw, 18px);
+            color: #aaaacc;
+            font-weight: 300;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 2px 14px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== TOMBOL TANDAI (BINTANG) DI KIRI ATAS ===== */
+        .card-front .mark-btn {
+            position: absolute;
+            top: 12px; left: 14px;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 2px solid rgba(200, 170, 40, 0.5);
+            background: rgba(255, 255, 255, 0.85);
+            color: #b8a030;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            z-index: 5;
+            padding: 0;
+            font-family: inherit;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .card-front .mark-btn:hover {
+            transform: scale(1.08);
+            background: rgba(255, 250, 230, 0.95);
+        }
+        .card-front .mark-btn:active { transform: scale(0.9); }
+        .card-front .mark-btn.marked {
+            background: linear-gradient(135deg, #ffd54a, #ffb300);
+            color: #fff;
+            border-color: #ffb300;
+            box-shadow: 0 0 20px rgba(255, 179, 0, 0.7), 0 2px 10px rgba(0, 0, 0, 0.15);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(160deg, #fefefe, #f5f0ff);
+            border: 2px solid rgba(160, 120, 255, 0.25);
+            justify-content: flex-start;
+            padding-top: 20px;
+            gap: 4px;
+            overflow-y: auto;
+        }
+        .card-back::-webkit-scrollbar { width: 3px; }
+        .card-back::-webkit-scrollbar-thumb { background: #c0b0d0; border-radius: 10px; }
+
+        .card-back .back-pinyin {
+            font-size: clamp(22px, 5vw, 38px);
+            color: #e85d75;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+        .card-back .back-arti {
+            font-size: clamp(16px, 3.6vw, 28px);
+            color: #2d1b4e;
+            font-weight: 500;
+            background: rgba(232, 93, 117, 0.08);
+            padding: 4px 18px;
+            border-radius: 30px;
+            margin: 2px 0 8px 0;
+            text-align: center;
+        }
+        .card-back .contoh-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 0 4px;
+        }
+        .card-back .contoh-label {
+            font-size: clamp(12px, 2.2vw, 16px);
+            color: #8870aa;
+            letter-spacing: 3px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        .card-back .contoh-hanzi {
+            font-size: clamp(18px, 4vw, 32px);
+            color: #1a0a2e;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.5;
+            padding: 4px 0;
+            word-break: break-word;
+        }
+        .card-back .contoh-pinyin {
+            font-size: clamp(14px, 3vw, 22px);
+            color: #e85d75;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0.9;
+            word-break: break-word;
+        }
+        .card-back .contoh-arti {
+            font-size: clamp(14px, 3vw, 22px);
+            color: #4a3a6a;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.5;
+            background: rgba(160, 120, 255, 0.07);
+            padding: 4px 16px;
+            border-radius: 30px;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+        .card-back .back-tap-hint {
+            position: absolute;
+            bottom: 14px;
+            font-size: clamp(10px, 1.8vw, 13px);
+            color: #aaaacc;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 2px 16px;
+            border-radius: 30px;
+        }
+        .card-back .mark-badge {
+            position: absolute;
+            top: 14px; left: 16px;
+            font-size: clamp(13px, 2.4vw, 18px);
+            color: #b8860b;
+            font-weight: 700;
+            background: rgba(255, 215, 0, 0.35);
+            padding: 2px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 200, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .dot-deco {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin: 2px 0 4px 0;
+        }
+        .dot-deco span {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #d0b0e0;
+            opacity: 0.4;
+        }
+        .dot-deco span:nth-child(2) { background: #e85d75; opacity: 0.5; }
+        .dot-deco span:nth-child(3) { background: #48dbfb; opacity: 0.4; }
+
+        .card-back .content-wrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            gap: 2px;
+            padding: 4px 0;
+        }
+
+        .highlight-word { color: #e85d75; font-weight: 700; }
+
+        .nav-bar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            padding: 6px 0 0 0;
+            gap: 4px;
+        }
+        .nav-btn {
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 14px;
+            font-size: clamp(13px, 2.8vw, 20px);
+            font-weight: 600;
+            color: #3d2a5a;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            min-width: 44px;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        .nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .nav-btn:active:not(:disabled) { transform: scale(0.94); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+        .nav-btn.prev-btn { background: rgba(255, 215, 0, 0.6); border-color: rgba(255, 215, 0, 0.3); }
+        .nav-btn.prev-btn:hover:not(:disabled) { background: rgba(255, 215, 0, 0.85); }
+        .nav-btn.next-btn { background: rgba(72, 219, 251, 0.6); border-color: rgba(72, 219, 251, 0.3); }
+        .nav-btn.next-btn:hover:not(:disabled) { background: rgba(72, 219, 251, 0.85); }
+        .nav-btn.random-btn {
+            background: rgba(255, 150, 100, 0.6);
+            border-color: rgba(255, 150, 100, 0.3);
+            font-size: clamp(12px, 2.6vw, 18px);
+        }
+        .nav-btn.random-btn:hover:not(:disabled) { background: rgba(255, 150, 100, 0.85); }
+        .nav-btn.mark-filter-btn {
+            background: rgba(255, 215, 0, 0.55);
+            border-color: rgba(255, 200, 0, 0.4);
+            font-size: clamp(12px, 2.6vw, 18px);
+        }
+        .nav-btn.mark-filter-btn.active {
+            background: linear-gradient(135deg, #ffd54a, #ffb300);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(255, 179, 0, 0.6);
+        }
+
+        .nav-counter {
+            font-size: clamp(13px, 2.6vw, 20px);
+            color: #3d2a5a;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            padding: 4px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            min-width: 50px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 440px) {
+            .phone-frame { border-radius: 24px; padding: 12px 10px 10px 10px; }
+            .card-face { padding: 16px 12px; border-radius: 20px; }
+            .card-flipper { border-radius: 20px; }
+            .nav-btn { padding: 5px 8px; min-width: 34px; border-radius: 30px; font-size: clamp(10px, 2.2vw, 14px); }
+            .nav-counter { min-width: 40px; padding: 2px 8px; font-size: clamp(10px, 2vw, 14px); }
+            .card-front .mark-btn { width: 38px; height: 38px; font-size: 20px; top: 10px; left: 10px; }
+        }
+
+        @media (max-height: 700px) {
+            .header h1 { font-size: clamp(14px, 3.6vw, 20px); }
+            .header .sub { font-size: clamp(8px, 1.8vw, 12px); }
+            .card-front .hanzi { font-size: clamp(48px, 12vw, 80px); }
+            .card-back .back-pinyin { font-size: clamp(16px, 4vw, 26px); }
+            .card-back .back-arti { font-size: clamp(12px, 3vw, 20px); }
+            .card-back .contoh-hanzi { font-size: clamp(14px, 3.2vw, 22px); }
+            .card-back .contoh-pinyin { font-size: clamp(11px, 2.4vw, 16px); }
+            .card-back .contoh-arti { font-size: clamp(11px, 2.4vw, 16px); }
+        }
+        @media (max-height: 600px) {
+            .card-front .hanzi { font-size: clamp(36px, 10vw, 60px); }
+            .card-back .back-pinyin { font-size: clamp(14px, 3.2vw, 20px); }
+            .card-back .back-arti { font-size: clamp(10px, 2.4vw, 16px); }
+            .card-back .contoh-hanzi { font-size: clamp(12px, 2.6vw, 18px); }
+            .card-back .contoh-pinyin { font-size: clamp(10px, 2vw, 14px); }
+            .card-back .contoh-arti { font-size: clamp(10px, 2vw, 14px); }
+            .header h1 { font-size: clamp(12px, 3vw, 16px); }
+            .header .sub { font-size: clamp(7px, 1.4vw, 10px); }
+        }
+        .card-wrapper:active .card-front .hanzi { transform: scale(0.96); }
+        .card-back { scrollbar-width: thin; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="phone-frame" id="app">
+        <div class="header">
+            <h1>✦ HSK2 KOSAKATA ✦</h1>
+            <div class="package-row">
+                <button class="package-btn" id="pkgPrev" title="Paket sebelumnya">◀</button>
+                <select id="packageSelect" class="package-select"></select>
+                <button class="package-btn" id="pkgNext" title="Paket berikutnya">▶</button>
+                <span class="package-code" id="packageCode">ALL</span>
+            </div>
+            <div class="sub"><span>by LCN Palembang</span></div>
+        </div>
+
+        <div class="card-wrapper" id="cardWrapper">
+            <div class="card-flipper" id="cardFlipper">
+                <div class="card-face card-front" id="cardFront">
+                    <button class="mark-btn" id="markBtn" title="Tandai kata ini (tidak tahu)">☆</button>
+                    <div class="index-badge" id="frontIndex">1 / 212</div>
+                    <div class="hanzi" id="hanziDisplay">就</div>
+                    <div class="tap-hint">👆 klik untuk melihat</div>
+                </div>
+                <div class="card-face card-back" id="cardBack">
+                    <div class="mark-badge" id="markBadge" style="display:none;">★ DITANDAI</div>
+                    <div class="content-wrap">
+                        <div class="back-pinyin" id="pinyinDisplay">jiù</div>
+                        <div class="back-arti" id="artiDisplay">lalu, segera</div>
+                        <div class="dot-deco"><span></span><span></span><span></span></div>
+                        <div class="contoh-section">
+                            <div class="contoh-label">— Contoh Kalimat —</div>
+                            <div class="contoh-hanzi" id="contohHanzi">我就来。</div>
+                            <div class="contoh-pinyin" id="contohPinyin">Wǒ jiù lái.</div>
+                            <div class="contoh-arti" id="contohArti">Saya segera datang.</div>
+                        </div>
+                    </div>
+                    <div class="back-tap-hint">👆 klik untuk kembali</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-bar">
+            <button class="nav-btn prev-btn" id="prevBtn" disabled>◀ Prev</button>
+            <div class="nav-counter" id="navCounter">1 / 212</div>
+            <button class="nav-btn mark-filter-btn" id="markFilterBtn" title="Tampilkan hanya kata yang ditandai">★ <span id="markCount">0</span></button>
+            <button class="nav-btn random-btn" id="randomBtn">🎲</button>
+            <button class="nav-btn next-btn" id="nextBtn">Next ▶</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  DATA KOSAKATA HSK2 — 15 Pelajaran (212 kata)
+        // ============================================================
+        const baseData = [
+            // ===== 第一课 =====
+            { lesson: 1, hanzi: '就', pinyin: 'jiù', arti: 'lalu, segera', contoh: '我就来。', contohPinyin: 'Wǒ jiù lái.', contohArti: 'Saya segera datang.' },
+            { lesson: 1, hanzi: '给', pinyin: 'gěi', arti: 'memberi, untuk', contoh: '给我一杯水。', contohPinyin: 'Gěi wǒ yī bēi shuǐ.', contohArti: 'Berikan saya segelas air.' },
+            { lesson: 1, hanzi: '让', pinyin: 'ràng', arti: 'membiarkan, menyuruh', contoh: '让我看看。', contohPinyin: 'Ràng wǒ kàn kan.', contohArti: 'Biarkan saya lihat.' },
+            { lesson: 1, hanzi: '接', pinyin: 'jiē', arti: 'menjemput, menerima', contoh: '我去接你。', contohPinyin: 'Wǒ qù jiē nǐ.', contohArti: 'Saya pergi menjemputmu.' },
+            { lesson: 1, hanzi: '次', pinyin: 'cì', arti: 'kali (penanda frekuensi)', contoh: '我去过一次。', contohPinyin: 'Wǒ qù guo yī cì.', contohArti: 'Saya sudah pergi sekali.' },
+            { lesson: 1, hanzi: '旅游', pinyin: 'lǚ yóu', arti: 'bepergian, wisata', contoh: '我喜欢旅游。', contohPinyin: 'Wǒ xǐhuān lǚyóu.', contohArti: 'Saya suka bepergian.' },
+            { lesson: 1, hanzi: '帮忙', pinyin: 'bāng máng', arti: 'membantu', contoh: '你能帮忙吗？', contohPinyin: 'Nǐ néng bāngmáng ma?', contohArti: 'Bisakah kamu membantu?' },
+            { lesson: 1, hanzi: '不好意思', pinyin: 'bù hǎo yì si', arti: 'malu, sungkan', contoh: '不好意思，我迟到了。', contohPinyin: 'Bùhǎoyìsi, wǒ chídào le.', contohArti: 'Maaf, saya terlambat.' },
+            { lesson: 1, hanzi: '已经', pinyin: 'yǐ jīng', arti: 'sudah', contoh: '我已经吃了。', contohPinyin: 'Wǒ yǐjīng chī le.', contohArti: 'Saya sudah makan.' },
+            { lesson: 1, hanzi: '那', pinyin: 'nà', arti: 'itu', contoh: '那是我的书。', contohPinyin: 'Nà shì wǒ de shū.', contohArti: 'Itu buku saya.' },
+            { lesson: 1, hanzi: '介绍', pinyin: 'jiè shào', arti: 'memperkenalkan', contoh: '我介绍朋友给你。', contohPinyin: 'Wǒ jièshào péngyou gěi nǐ.', contohArti: 'Saya memperkenalkan teman kepadamu.' },
+            { lesson: 1, hanzi: '有时', pinyin: 'yǒu shí', arti: 'kadang-kadang', contoh: '他有时来。', contohPinyin: 'Tā yǒushí lái.', contohArti: 'Dia kadang-kadang datang.' },
+            { lesson: 1, hanzi: '懂', pinyin: 'dǒng', arti: 'mengerti, paham', contoh: '我懂了。', contohPinyin: 'Wǒ dǒng le.', contohArti: 'Saya mengerti.' },
+            { lesson: 1, hanzi: '意思', pinyin: 'yì si', arti: 'arti, maksud', contoh: '这是什么意思？', contohPinyin: 'Zhè shì shénme yìsi?', contohArti: 'Apa artinya ini?' },
+            { lesson: 1, hanzi: '北京烤鸭', pinyin: 'Běi jīng kǎo yā', arti: 'bebek panggang Beijing', contoh: '我爱吃北京烤鸭。', contohPinyin: 'Wǒ ài chī Běijīng kǎoyā.', contohArti: 'Saya suka makan bebek panggang Beijing.' },
+
+            // ===== 第二课 =====
+            { lesson: 2, hanzi: '公交车', pinyin: 'gōng jiāo chē', arti: 'bus umum', contoh: '我坐公交车上班。', contohPinyin: 'Wǒ zuò gōngjiāochē shàngbān.', contohArti: 'Saya naik bus ke kantor.' },
+            { lesson: 2, hanzi: '但', pinyin: 'dàn', arti: 'tetapi', contoh: '我想去，但没时间。', contohPinyin: 'Wǒ xiǎng qù, dàn méi shíjiān.', contohArti: 'Saya ingin pergi, tetapi tidak ada waktu.' },
+            { lesson: 2, hanzi: '车站', pinyin: 'chē zhàn', arti: 'halte, stasiun', contoh: '车站在那里。', contohPinyin: 'Chēzhàn zài nàli.', contohArti: 'Halte ada di sana.' },
+            { lesson: 2, hanzi: '远', pinyin: 'yuǎn', arti: 'jauh', contoh: '学校很远。', contohPinyin: 'Xuéxiào hěn yuǎn.', contohArti: 'Sekolah sangat jauh.' },
+            { lesson: 2, hanzi: '打车', pinyin: 'dǎ chē', arti: 'naik taksi', contoh: '我们打车去吧。', contohPinyin: 'Wǒmen dǎchē qù ba.', contohArti: 'Kita naik taksi saja.' },
+            { lesson: 2, hanzi: '还是', pinyin: 'hái shì', arti: 'lebih baik, atau', contoh: '还是打车吧。', contohPinyin: 'Hái shì dǎchē ba.', contohArti: 'Lebih baik naik taksi.' },
+            { lesson: 2, hanzi: '北京大学', pinyin: 'Běi jīng Dà xué', arti: 'Universitas Peking', contoh: '他在北京大学学习。', contohPinyin: 'Tā zài Běijīng Dàxué xuéxí.', contohArti: 'Dia belajar di Universitas Peking.' },
+            { lesson: 2, hanzi: '啊', pinyin: 'a', arti: 'ah (seru)', contoh: '啊，原来是你！', contohPinyin: 'A, yuánlái shì nǐ!', contohArti: 'Ah, ternyata kamu!' },
+            { lesson: 2, hanzi: '万', pinyin: 'wàn', arti: 'sepuluh ribu', contoh: '一万块钱。', contohPinyin: 'Yī wàn kuài qián.', contohArti: 'Sepuluh ribu yuan.' },
+            { lesson: 2, hanzi: '名', pinyin: 'míng', arti: 'nama, orang (penghitung)', contoh: '三名学生。', contohPinyin: 'Sān míng xuésheng.', contohArti: 'Tiga orang siswa.' },
+            { lesson: 2, hanzi: '网上', pinyin: 'wǎng shàng', arti: 'online, di internet', contoh: '我在网上买东西。', contohPinyin: 'Wǒ zài wǎngshàng mǎi dōngxi.', contohArti: 'Saya belanja online.' },
+            { lesson: 2, hanzi: '外国', pinyin: 'wài guó', arti: 'luar negeri', contoh: '他去了外国。', contohPinyin: 'Tā qù le wàiguó.', contohArti: 'Dia pergi ke luar negeri.' },
+            { lesson: 2, hanzi: '间', pinyin: 'jiān', arti: 'penghitung ruangan', contoh: '一间教室。', contohPinyin: 'Yī jiān jiàoshì.', contohArti: 'Satu ruang kelas.' },
+            { lesson: 2, hanzi: '教室', pinyin: 'jiào shì', arti: 'ruang kelas', contoh: '教室很干净。', contohPinyin: 'Jiàoshì hěn gānjìng.', contohArti: 'Ruang kelas sangat bersih.' },
+            { lesson: 2, hanzi: '票', pinyin: 'piào', arti: 'tiket', contoh: '我买了两张票。', contohPinyin: 'Wǒ mǎi le liǎng zhāng piào.', contohArti: 'Saya membeli dua tiket.' },
+            { lesson: 2, hanzi: '别', pinyin: 'bié', arti: 'jangan', contoh: '别去！', contohPinyin: 'Bié qù!', contohArti: 'Jangan pergi!' },
+
+            // ===== 第三课 =====
+            { lesson: 3, hanzi: '回来', pinyin: 'huí lai', arti: 'kembali (ke sini)', contoh: '他回来了。', contohPinyin: 'Tā huílái le.', contohArti: 'Dia sudah kembali.' },
+            { lesson: 3, hanzi: '这么', pinyin: 'zhè me', arti: 'begitu, segini', contoh: '这么好吃！', contohPinyin: 'Zhème hǎochī!', contohArti: 'Enak sekali!' },
+            { lesson: 3, hanzi: '完', pinyin: 'wán', arti: 'selesai', contoh: '我写完了。', contohPinyin: 'Wǒ xiě wán le.', contohArti: 'Saya sudah selesai menulis.' },
+            { lesson: 3, hanzi: '一起', pinyin: 'yī qǐ', arti: 'bersama-sama', contoh: '我们一起走吧。', contohPinyin: 'Wǒmen yīqǐ zǒu ba.', contohArti: 'Kita pergi bersama-sama.' },
+            { lesson: 3, hanzi: '出去', pinyin: 'chū qù', arti: 'keluar', contoh: '他出去了。', contohPinyin: 'Tā chūqù le.', contohArti: 'Dia keluar.' },
+            { lesson: 3, hanzi: '洗', pinyin: 'xǐ', arti: 'mencuci', contoh: '我去洗手。', contohPinyin: 'Wǒ qù xǐ shǒu.', contohArti: 'Saya pergi cuci tangan.' },
+            { lesson: 3, hanzi: '自己', pinyin: 'zì jǐ', arti: 'sendiri', contoh: '我自己做。', contohPinyin: 'Wǒ zìjǐ zuò.', contohArti: 'Saya lakukan sendiri.' },
+            { lesson: 3, hanzi: '拿', pinyin: 'ná', arti: 'mengambil, membawa', contoh: '我拿书。', contohPinyin: 'Wǒ ná shū.', contohArti: 'Saya mengambil buku.' },
+            { lesson: 3, hanzi: '手', pinyin: 'shǒu', arti: 'tangan', contoh: '我的手很干净。', contohPinyin: 'Wǒ de shǒu hěn gānjìng.', contohArti: 'Tangan saya sangat bersih.' },
+            { lesson: 3, hanzi: '为什么', pinyin: 'wèi shén me', arti: 'mengapa', contoh: '为什么不来？', contohPinyin: 'Wèishénme bù lái?', contohArti: 'Mengapa tidak datang?' },
+            { lesson: 3, hanzi: '不错', pinyin: 'bù cuò', arti: 'tidak buruk', contoh: '这个电影不错。', contohPinyin: 'Zhège diànyǐng bùcuò.', contohArti: 'Film ini tidak buruk.' },
+            { lesson: 3, hanzi: '送', pinyin: 'sòng', arti: 'mengantar, memberi', contoh: '我送你回家。', contohPinyin: 'Wǒ sòng nǐ huí jiā.', contohArti: 'Saya mengantarmu pulang.' },
+            { lesson: 3, hanzi: '回去', pinyin: 'huí qu', arti: 'kembali (ke sana)', contoh: '他回去了。', contohPinyin: 'Tā huíqù le.', contohArti: 'Dia sudah kembali.' },
+            { lesson: 3, hanzi: '每', pinyin: 'měi', arti: 'setiap', contoh: '每天我都跑步。', contohPinyin: 'Měi tiān wǒ dōu pǎobù.', contohArti: 'Setiap hari saya lari.' },
+            { lesson: 3, hanzi: '累', pinyin: 'lèi', arti: 'lelah', contoh: '我很累。', contohPinyin: 'Wǒ hěn lèi.', contohArti: 'Saya sangat lelah.' },
+
+            // ===== 第四课 =====
+            { lesson: 4, hanzi: '过', pinyin: 'guo', arti: 'telah (penanda pengalaman)', contoh: '我去过北京。', contohPinyin: 'Wǒ qù guo Běijīng.', contohArti: 'Saya pernah ke Beijing.' },
+            { lesson: 4, hanzi: '商场', pinyin: 'shāng chǎng', arti: 'pusat perbelanjaan', contoh: '我们去商场吧。', contohPinyin: 'Wǒmen qù shāngchǎng ba.', contohArti: 'Kita pergi ke pusat perbelanjaan.' },
+            { lesson: 4, hanzi: '进去', pinyin: 'jìn qù', arti: 'masuk (ke dalam)', contoh: '请进去。', contohPinyin: 'Qǐng jìnqù.', contohArti: 'Silakan masuk.' },
+            { lesson: 4, hanzi: '条', pinyin: 'tiáo', arti: 'penghitung (panjang, celana)', contoh: '一条裤子。', contohPinyin: 'Yī tiáo kùzi.', contohArti: 'Seutas/sebuah celana.' },
+            { lesson: 4, hanzi: '裤子', pinyin: 'kù zi', arti: 'celana', contoh: '这条裤子很漂亮。', contohPinyin: 'Zhè tiáo kùzi hěn piàoliang.', contohArti: 'Celana ini sangat cantik.' },
+            { lesson: 4, hanzi: '白色', pinyin: 'bái sè', arti: 'putih', contoh: '他穿白色衬衫。', contohPinyin: 'Tā chuān báisè chènshān.', contohArti: 'Dia memakai kemeja putih.' },
+            { lesson: 4, hanzi: '因为', pinyin: 'yīn wèi', arti: 'karena', contoh: '因为下雨，我不去了。', contohPinyin: 'Yīnwèi xiàyǔ, wǒ bù qù le.', contohArti: 'Karena hujan, saya tidak pergi.' },
+            { lesson: 4, hanzi: '试', pinyin: 'shì', arti: 'mencoba', contoh: '我想试一下。', contohPinyin: 'Wǒ xiǎng shì yīxià.', contohArti: 'Saya ingin mencoba sebentar.' },
+            { lesson: 4, hanzi: '红色', pinyin: 'hóng sè', arti: 'merah', contoh: '我喜欢红色。', contohPinyin: 'Wǒ xǐhuān hóngsè.', contohArti: 'Saya suka warna merah.' },
+            { lesson: 4, hanzi: '所以', pinyin: 'suǒ yǐ', arti: 'jadi, oleh karena itu', contoh: '下雨了，所以我不去了。', contohPinyin: 'Xiàyǔ le, suǒyǐ wǒ bù qù le.', contohArti: 'Hujan, jadi saya tidak pergi.' },
+            { lesson: 4, hanzi: '书包', pinyin: 'shū bāo', arti: 'tas sekolah', contoh: '我的书包很重。', contohPinyin: 'Wǒ de shūbāo hěn zhòng.', contohArti: 'Tas sekolah saya sangat berat.' },
+            { lesson: 4, hanzi: '过去', pinyin: 'guò qu', arti: 'lewat, pergi ke sana', contoh: '他走过去了。', contohPinyin: 'Tā zǒu guòqu le.', contohArti: 'Dia berjalan lewat.' },
+            { lesson: 4, hanzi: '绿色', pinyin: 'lǜ sè', arti: 'hijau', contoh: '树叶是绿色的。', contohPinyin: 'Shùyè shì lǜsè de.', contohArti: 'Daun pohon berwarna hijau.' },
+            { lesson: 4, hanzi: '黑色', pinyin: 'hēi sè', arti: 'hitam', contoh: '他的车是黑色的。', contohPinyin: 'Tā de chē shì hēisè de.', contohArti: 'Mobilnya berwarna hitam.' },
+            { lesson: 4, hanzi: '更', pinyin: 'gèng', arti: 'lebih (komparatif)', contoh: '这个更好。', contohPinyin: 'Zhège gèng hǎo.', contohArti: 'Ini lebih baik.' },
+
+            // ===== 第五课 =====
+            { lesson: 5, hanzi: '快', pinyin: 'kuài', arti: 'cepat, segera', contoh: '快来吧！', contohPinyin: 'Kuài lái ba!', contohArti: 'Cepat datang!' },
+            { lesson: 5, hanzi: '下来', pinyin: 'xià lai', arti: 'turun (ke sini)', contoh: '你下来吧。', contohPinyin: 'Nǐ xiàlái ba.', contohArti: 'Kamu turunlah.' },
+            { lesson: 5, hanzi: '上来', pinyin: 'shàng lai', arti: 'naik (ke sini)', contoh: '请上来。', contohPinyin: 'Qǐng shànglái.', contohArti: 'Silakan naik.' },
+            { lesson: 5, hanzi: '上去', pinyin: 'shàng qu', arti: 'naik (ke sana)', contoh: '他上去了。', contohPinyin: 'Tā shàngqù le.', contohArti: 'Dia naik ke atas.' },
+            { lesson: 5, hanzi: '下面', pinyin: 'xià miàn', arti: 'di bawah', contoh: '书在桌子下面。', contohPinyin: 'Shū zài zhuōzi xiàmiàn.', contohArti: 'Buku ada di bawah meja.' },
+            { lesson: 5, hanzi: '面', pinyin: 'miàn', arti: 'sisi, permukaan', contoh: '前面有一个人。', contohPinyin: 'Qiánmiàn yǒu yī gè rén.', contohArti: 'Di depan ada seseorang.' },
+            { lesson: 5, hanzi: '等', pinyin: 'děng', arti: 'menunggu', contoh: '请等一会儿。', contohPinyin: 'Qǐng děng yīhuìr.', contohArti: 'Tolong tunggu sebentar.' },
+            { lesson: 5, hanzi: '一会儿', pinyin: 'yī huì r', arti: 'sebentar', contoh: '我等一会儿。', contohPinyin: 'Wǒ děng yīhuìr.', contohArti: 'Saya tunggu sebentar.' },
+            { lesson: 5, hanzi: '下去', pinyin: 'xià qu', arti: 'turun (ke sana)', contoh: '他下去了。', contohPinyin: 'Tā xiàqù le.', contohArti: 'Dia turun ke bawah.' },
+            { lesson: 5, hanzi: '进来', pinyin: 'jìn lai', arti: 'masuk (ke sini)', contoh: '请进来。', contohPinyin: 'Qǐng jìnlái.', contohArti: 'Silakan masuk.' },
+            { lesson: 5, hanzi: '爷爷', pinyin: 'yé ye', arti: 'kakek (ayah dari ayah)', contoh: '爷爷来了。', contohPinyin: 'Yéye lái le.', contohArti: 'Kakek datang.' },
+            { lesson: 5, hanzi: '奶奶', pinyin: 'nǎi nai', arti: 'nenek (ibu dari ayah)', contoh: '奶奶在家。', contohPinyin: 'Nǎinai zài jiā.', contohArti: 'Nenek ada di rumah.' },
+            { lesson: 5, hanzi: '礼物', pinyin: 'lǐ wù', arti: 'hadiah', contoh: '我买了礼物。', contohPinyin: 'Wǒ mǎi le lǐwù.', contohArti: 'Saya membeli hadiah.' },
+            { lesson: 5, hanzi: '准备', pinyin: 'zhǔn bèi', arti: 'mempersiapkan', contoh: '我准备走了。', contohPinyin: 'Wǒ zhǔnbèi zǒu le.', contohArti: 'Saya bersiap pergi.' },
+            { lesson: 5, hanzi: '奶茶', pinyin: 'nǎi chá', arti: 'teh susu', contoh: '我想喝奶茶。', contohPinyin: 'Wǒ xiǎng hē nǎichá.', contohArti: 'Saya ingin minum teh susu.' },
+            { lesson: 5, hanzi: '跟', pinyin: 'gēn', arti: 'dengan, bersama', contoh: '我跟你去。', contohPinyin: 'Wǒ gēn nǐ qù.', contohArti: 'Saya pergi denganmu.' },
+            { lesson: 5, hanzi: '酒店', pinyin: 'jiǔ diàn', arti: 'hotel', contoh: '我们住酒店。', contohPinyin: 'Wǒmen zhù jiǔdiàn.', contohArti: 'Kita menginap di hotel.' },
+
+            // ===== 第六课 =====
+            { lesson: 6, hanzi: '生日', pinyin: 'shēng rì', arti: 'ulang tahun', contoh: '今天是你的生日。', contohPinyin: 'Jīntiān shì nǐ de shēngrì.', contohArti: 'Hari ini adalah ulang tahunmu.' },
+            { lesson: 6, hanzi: '忘', pinyin: 'wàng', arti: 'lupa', contoh: '我忘了。', contohPinyin: 'Wǒ wàng le.', contohArti: 'Saya lupa.' },
+            { lesson: 6, hanzi: '画', pinyin: 'huà', arti: 'menggambar, lukisan', contoh: '我画了一幅画。', contohPinyin: 'Wǒ huà le yī fú huà.', contohArti: 'Saya menggambar sebuah lukisan.' },
+            { lesson: 6, hanzi: '画笔', pinyin: 'huà bǐ', arti: 'kuas lukis', contoh: '这是画笔。', contohPinyin: 'Zhè shì huàbǐ.', contohArti: 'Ini kuas lukis.' },
+            { lesson: 6, hanzi: '蛋糕', pinyin: 'dàn gāo', arti: 'kue', contoh: '生日快乐蛋糕。', contohPinyin: 'Shēngrì kuàilè dàngāo.', contohArti: 'Kue ulang tahun.' },
+            { lesson: 6, hanzi: '快乐', pinyin: 'kuài lè', arti: 'bahagia, senang', contoh: '生日快乐！', contohPinyin: 'Shēngrì kuàilè!', contohArti: 'Selamat ulang tahun!' },
+            { lesson: 6, hanzi: '打开', pinyin: 'dǎ kāi', arti: 'membuka', contoh: '请打开门。', contohPinyin: 'Qǐng dǎkāi mén.', contohArti: 'Tolong buka pintu.' },
+            { lesson: 6, hanzi: '长', pinyin: 'cháng', arti: 'panjang', contoh: '她的头发很长。', contohPinyin: 'Tā de tóufa hěn cháng.', contohArti: 'Rambutnya sangat panjang.' },
+            { lesson: 6, hanzi: '鱼', pinyin: 'yú', arti: 'ikan', contoh: '我喜欢吃鱼。', contohPinyin: 'Wǒ xǐhuān chī yú.', contohArti: 'Saya suka makan ikan.' },
+            { lesson: 6, hanzi: '肉', pinyin: 'ròu', arti: 'daging', contoh: '我不吃肉。', contohPinyin: 'Wǒ bù chī ròu.', contohArti: 'Saya tidak makan daging.' },
+            { lesson: 6, hanzi: '过', pinyin: 'guò', arti: 'melewati, menghabiskan', contoh: '时间过得真快。', contohPinyin: 'Shíjiān guò de zhēn kuài.', contohArti: 'Waktu berlalu sangat cepat.' },
+            { lesson: 6, hanzi: '地', pinyin: 'de', arti: 'partikel kata keterangan', contoh: '他高兴地说。', contohPinyin: 'Tā gāoxìng de shuō.', contohArti: 'Dia berkata dengan gembira.' },
+            { lesson: 6, hanzi: '床', pinyin: 'chuáng', arti: 'tempat tidur', contoh: '床很大。', contohPinyin: 'Chuáng hěn dà.', contohArti: 'Tempat tidurnya besar.' },
+            { lesson: 6, hanzi: '舒服', pinyin: 'shū fu', arti: 'nyaman', contoh: '这张床很舒服。', contohPinyin: 'Zhè zhāng chuáng hěn shūfu.', contohArti: 'Tempat tidur ini sangat nyaman.' },
+
+            // ===== 第七课 =====
+            { lesson: 7, hanzi: '从', pinyin: 'cóng', arti: 'dari', contoh: '我从北京来。', contohPinyin: 'Wǒ cóng Běijīng lái.', contohArti: 'Saya datang dari Beijing.' },
+            { lesson: 7, hanzi: '往', pinyin: 'wǎng', arti: 'menuju, ke arah', contoh: '往右走。', contohPinyin: 'Wǎng yòu zǒu.', contohArti: 'Belok ke kanan.' },
+            { lesson: 7, hanzi: '跑', pinyin: 'pǎo', arti: 'berlari', contoh: '他在跑步。', contohPinyin: 'Tā zài pǎobù.', contohArti: 'Dia sedang berlari.' },
+            { lesson: 7, hanzi: '打', pinyin: 'dǎ', arti: 'memukul, bermain (bola)', contoh: '打篮球。', contohPinyin: 'Dǎ lánqiú.', contohArti: 'Bermain basket.' },
+            { lesson: 7, hanzi: '篮球', pinyin: 'lán qiú', arti: 'bola basket', contoh: '我喜欢打篮球。', contohPinyin: 'Wǒ xǐhuān dǎ lánqiú.', contohArti: 'Saya suka bermain basket.' },
+            { lesson: 7, hanzi: '运动', pinyin: 'yùn dòng', arti: 'olahraga', contoh: '运动对身体好。', contohPinyin: 'Yùndòng duì shēntǐ hǎo.', contohArti: 'Olahraga baik untuk kesehatan.' },
+            { lesson: 7, hanzi: '踢', pinyin: 'tī', arti: 'menendang', contoh: '踢足球。', contohPinyin: 'Tī zúqiú.', contohArti: 'Bermain sepak bola.' },
+            { lesson: 7, hanzi: '足球', pinyin: 'zú qiú', arti: 'sepak bola', contoh: '足球比赛。', contohPinyin: 'Zúqiú bǐsài.', contohArti: 'Pertandingan sepak bola.' },
+            { lesson: 7, hanzi: '球', pinyin: 'qiú', arti: 'bola', contoh: '这个球很大。', contohPinyin: 'Zhège qiú hěn dà.', contohArti: 'Bola ini besar.' },
+            { lesson: 7, hanzi: '得', pinyin: 'de', arti: 'partikel (menyatakan cara)', contoh: '他跑得很快。', contohPinyin: 'Tā pǎo de hěn kuài.', contohArti: 'Dia berlari sangat cepat.' },
+            { lesson: 7, hanzi: '跑步', pinyin: 'pǎo bù', arti: 'lari', contoh: '我每天跑步。', contohPinyin: 'Wǒ měi tiān pǎobù.', contohArti: 'Saya lari setiap hari.' },
+            { lesson: 7, hanzi: '游泳', pinyin: 'yóu yǒng', arti: 'berenang', contoh: '他会游泳。', contohPinyin: 'Tā huì yóuyǒng.', contohArti: 'Dia bisa berenang.' },
+            { lesson: 7, hanzi: '游', pinyin: 'yóu', arti: 'berenang, bepergian', contoh: '我们去游泳吧。', contohPinyin: 'Wǒmen qù yóuyǒng ba.', contohArti: 'Kita pergi berenang.' },
+            { lesson: 7, hanzi: '爱好', pinyin: 'ài hào', arti: 'hobi', contoh: '我的爱好是运动。', contohPinyin: 'Wǒ de àihào shì yùndòng.', contohArti: 'Hobi saya adalah olahraga.' },
+            { lesson: 7, hanzi: '开始', pinyin: 'kāi shǐ', arti: 'mulai', contoh: '开始上课。', contohPinyin: 'Kāishǐ shàngkè.', contohArti: 'Mulai kelas.' },
+
+            // ===== 第八课 =====
+            { lesson: 8, hanzi: '手表', pinyin: 'shǒu biǎo', arti: 'jam tangan', contoh: '我有一块手表。', contohPinyin: 'Wǒ yǒu yī kuài shǒubiǎo.', contohArti: 'Saya punya jam tangan.' },
+            { lesson: 8, hanzi: '左边', pinyin: 'zuǒ bian', arti: 'sisi kiri', contoh: '在左边。', contohPinyin: 'Zài zuǒbian.', contohArti: 'Di sebelah kiri.' },
+            { lesson: 8, hanzi: '左', pinyin: 'zuǒ', arti: 'kiri', contoh: '左转。', contohPinyin: 'Zuǒ zhuǎn.', contohArti: 'Belok kiri.' },
+            { lesson: 8, hanzi: '比', pinyin: 'bǐ', arti: 'dari (perbandingan)', contoh: '我比他高。', contohPinyin: 'Wǒ bǐ tā gāo.', contohArti: 'Saya lebih tinggi darinya.' },
+            { lesson: 8, hanzi: '右边', pinyin: 'yòu bian', arti: 'sisi kanan', contoh: '在右边。', contohPinyin: 'Zài yòubian.', contohArti: 'Di sebelah kanan.' },
+            { lesson: 8, hanzi: '右', pinyin: 'yòu', arti: 'kanan', contoh: '右转。', contohPinyin: 'Yòu zhuǎn.', contohArti: 'Belok kanan.' },
+            { lesson: 8, hanzi: '记得', pinyin: 'jì de', arti: 'ingat', contoh: '我记得你。', contohPinyin: 'Wǒ jìde nǐ.', contohArti: 'Saya ingat kamu.' },
+            { lesson: 8, hanzi: '爱情片', pinyin: 'ài qíng piàn', arti: 'film romantis', contoh: '我喜欢看爱情片。', contohPinyin: 'Wǒ xǐhuān kàn àiqíngpiàn.', contohArti: 'Saya suka menonton film romantis.' },
+            { lesson: 8, hanzi: '有意思', pinyin: 'yǒu yì si', arti: 'menarik', contoh: '这本书很有意思。', contohPinyin: 'Zhè běn shū hěn yǒuyìsi.', contohArti: 'Buku ini sangat menarik.' },
+            { lesson: 8, hanzi: '点', pinyin: 'diǎn', arti: 'sedikit, titik, jam', contoh: '我知道了。', contohPinyin: 'Wǒ zhīdào le.', contohArti: 'Saya tahu.' },
+            { lesson: 8, hanzi: '虽然', pinyin: 'suī rán', arti: 'meskipun', contoh: '虽然下雨，我还是去。', contohPinyin: 'Suīrán xiàyǔ, wǒ háishì qù.', contohArti: 'Meskipun hujan, saya tetap pergi.' },
+            { lesson: 8, hanzi: '但是', pinyin: 'dàn shì', arti: 'tetapi', contoh: '我想去，但是没时间。', contohPinyin: 'Wǒ xiǎng qù, dànshì méi shíjiān.', contohArti: 'Saya ingin pergi, tetapi tidak ada waktu.' },
+            { lesson: 8, hanzi: '花', pinyin: 'huā', arti: 'bunga', contoh: '我喜欢花。', contohPinyin: 'Wǒ xǐhuān huā.', contohArti: 'Saya suka bunga.' },
+            { lesson: 8, hanzi: '妻子', pinyin: 'qī zi', arti: 'istri', contoh: '他的妻子很漂亮。', contohPinyin: 'Tā de qīzi hěn piàoliang.', contohArti: 'Istrinya sangat cantik.' },
+            { lesson: 8, hanzi: '丈夫', pinyin: 'zhàng fu', arti: 'suami', contoh: '她的丈夫是老师。', contohPinyin: 'Tā de zhàngfu shì lǎoshī.', contohArti: 'Suaminya adalah guru.' },
+            { lesson: 8, hanzi: '饭馆', pinyin: 'fàn guǎn', arti: 'restoran', contoh: '我们去饭馆吃饭。', contohPinyin: 'Wǒmen qù fànguǎn chīfàn.', contohArti: 'Kita pergi ke restoran untuk makan.' },
+
+            // ===== 第九课 =====
+            { lesson: 9, hanzi: '坏', pinyin: 'huài', arti: 'buruk, rusak', contoh: '我的手机坏了。', contohPinyin: 'Wǒ de shǒujī huài le.', contohArti: 'HP saya rusak.' },
+            { lesson: 9, hanzi: '旁边', pinyin: 'páng biān', arti: 'di samping', contoh: '他坐在我旁边。', contohPinyin: 'Tā zuò zài wǒ pángbiān.', contohArti: 'Dia duduk di samping saya.' },
+            { lesson: 9, hanzi: '男孩儿', pinyin: 'nán hái r', arti: 'anak laki-laki', contoh: '那个男孩儿很高。', contohPinyin: 'Nàge nánháir hěn gāo.', contohArti: 'Anak laki-laki itu tinggi.' },
+            { lesson: 9, hanzi: '这样', pinyin: 'zhè yàng', arti: 'begini, seperti ini', contoh: '这样做不对。', contohPinyin: 'Zhèyàng zuò bù duì.', contohArti: 'Melakukan seperti ini tidak benar.' },
+            { lesson: 9, hanzi: '个子', pinyin: 'gè zi', arti: 'tinggi badan, postur', contoh: '他个子很高。', contohPinyin: 'Tā gèzi hěn gāo.', contohArti: 'Tinggi badannya tinggi.' },
+            { lesson: 9, hanzi: '那么', pinyin: 'nà me', arti: 'begitu, sangat', contoh: '他那么高。', contohPinyin: 'Tā nàme gāo.', contohArti: 'Dia begitu tinggi.' },
+            { lesson: 9, hanzi: '高', pinyin: 'gāo', arti: 'tinggi', contoh: '这棵树很高。', contohPinyin: 'Zhè kē shù hěn gāo.', contohArti: 'Pohon ini sangat tinggi.' },
+            { lesson: 9, hanzi: '门口', pinyin: 'mén kǒu', arti: 'pintu masuk', contoh: '他在门口等你。', contohPinyin: 'Tā zài ménkǒu děng nǐ.', contohArti: 'Dia menunggumu di pintu masuk.' },
+            { lesson: 9, hanzi: '咖啡', pinyin: 'kā fēi', arti: 'kopi', contoh: '我喜欢喝咖啡。', contohPinyin: 'Wǒ xǐhuān hē kāfēi.', contohArti: 'Saya suka minum kopi.' },
+            { lesson: 9, hanzi: '离', pinyin: 'lí', arti: 'dari (jarak)', contoh: '学校离这里很近。', contohPinyin: 'Xuéxiào lí zhèlǐ hěn jìn.', contohArti: 'Sekolah sangat dekat dari sini.' },
+            { lesson: 9, hanzi: '近', pinyin: 'jìn', arti: 'dekat', contoh: '我家离学校很近。', contohPinyin: 'Wǒ jiā lí xuéxiào hěn jìn.', contohArti: 'Rumah saya dekat dengan sekolah.' },
+            { lesson: 9, hanzi: '走', pinyin: 'zǒu', arti: 'berjalan, pergi', contoh: '我们走吧。', contohPinyin: 'Wǒmen zǒu ba.', contohArti: 'Ayo kita pergi.' },
+            { lesson: 9, hanzi: '走路', pinyin: 'zǒu lù', arti: 'berjalan kaki', contoh: '我走路去学校。', contohPinyin: 'Wǒ zǒulù qù xuéxiào.', contohArti: 'Saya berjalan kaki ke sekolah.' },
+            { lesson: 9, hanzi: '周', pinyin: 'zhōu', arti: 'minggu (pekan)', contoh: '一周有七天。', contohPinyin: 'Yī zhōu yǒu qī tiān.', contohArti: 'Satu minggu ada tujuh hari.' },
+
+            // ===== 第十课 =====
+            { lesson: 10, hanzi: '开学', pinyin: 'kāi xué', arti: 'mulai sekolah', contoh: '明天开学。', contohPinyin: 'Míngtiān kāixué.', contohArti: 'Besok mulai sekolah.' },
+            { lesson: 10, hanzi: '门', pinyin: 'mén', arti: 'pintu', contoh: '请关门。', contohPinyin: 'Qǐng guān mén.', contohArti: 'Tolong tutup pintu.' },
+            { lesson: 10, hanzi: '后面', pinyin: 'hòu miàn', arti: 'di belakang', contoh: '他在后面。', contohPinyin: 'Tā zài hòumiàn.', contohArti: 'Dia di belakang.' },
+            { lesson: 10, hanzi: '笔', pinyin: 'bǐ', arti: 'pena, alat tulis', contoh: '我有一支笔。', contohPinyin: 'Wǒ yǒu yī zhī bǐ.', contohArti: 'Saya punya sebuah pena.' },
+            { lesson: 10, hanzi: '帮', pinyin: 'bāng', arti: 'membantu', contoh: '你能帮我吗？', contohPinyin: 'Nǐ néng bāng wǒ ma?', contohArti: 'Bisakah kamu membantu saya?' },
+            { lesson: 10, hanzi: '考试', pinyin: 'kǎo shì', arti: 'ujian', contoh: '明天有考试。', contohPinyin: 'Míngtiān yǒu kǎoshì.', contohArti: 'Besok ada ujian.' },
+            { lesson: 10, hanzi: '词', pinyin: 'cí', arti: 'kata, kosakata', contoh: '这个生词很难。', contohPinyin: 'Zhège shēngcí hěn nán.', contohArti: 'Kosakata ini sulit.' },
+            { lesson: 10, hanzi: '本子', pinyin: 'běn zi', arti: 'buku catatan', contoh: '这是我的本子。', contohPinyin: 'Zhè shì wǒ de běnzi.', contohArti: 'Ini buku catatan saya.' },
+            { lesson: 10, hanzi: '错', pinyin: 'cuò', arti: 'salah', contoh: '我错了。', contohPinyin: 'Wǒ cuò le.', contohArti: 'Saya salah.' },
+            { lesson: 10, hanzi: '题', pinyin: 'tí', arti: 'soal, pertanyaan', contoh: '这道题很难。', contohPinyin: 'Zhè dào tí hěn nán.', contohArti: 'Soal ini sulit.' },
+            { lesson: 10, hanzi: '还是', pinyin: 'hái shì', arti: 'atau (dalam pertanyaan)', contoh: '你喝茶还是咖啡？', contohPinyin: 'Nǐ hē chá háishì kāfēi?', contohArti: 'Kamu minum teh atau kopi?' },
+            { lesson: 10, hanzi: '考', pinyin: 'kǎo', arti: 'mengikuti ujian', contoh: '我要考 HSK。', contohPinyin: 'Wǒ yào kǎo HSK.', contohArti: 'Saya mau ikut ujian HSK.' },
+            { lesson: 10, hanzi: '快要', pinyin: 'kuài yào', arti: 'akan segera', contoh: '快要下雨了。', contohPinyin: 'Kuàiyào xiàyǔ le.', contohArti: 'Akan segera hujan.' },
+            { lesson: 10, hanzi: '笑', pinyin: 'xiào', arti: 'tertawa', contoh: '他笑了。', contohPinyin: 'Tā xiào le.', contohArti: 'Dia tertawa.' },
+
+            // ===== 第十一课 =====
+            { lesson: 11, hanzi: '头', pinyin: 'tóu', arti: 'kepala', contoh: '我的头很疼。', contohPinyin: 'Wǒ de tóu hěn téng.', contohArti: 'Kepala saya sakit.' },
+            { lesson: 11, hanzi: '疼', pinyin: 'téng', arti: 'sakit', contoh: '我肚子疼。', contohPinyin: 'Wǒ dùzi téng.', contohArti: 'Perut saya sakit.' },
+            { lesson: 11, hanzi: '经常', pinyin: 'jīng cháng', arti: 'sering', contoh: '我经常去公园。', contohPinyin: 'Wǒ jīngcháng qù gōngyuán.', contohArti: 'Saya sering ke taman.' },
+            { lesson: 11, hanzi: '动', pinyin: 'dòng', arti: 'bergerak', contoh: '别动！', contohPinyin: 'Bié dòng!', contohArti: 'Jangan bergerak!' },
+            { lesson: 11, hanzi: '着', pinyin: 'zhe', arti: 'partikel (sedang)', contoh: '他坐着。', contohPinyin: 'Tā zuò zhe.', contohArti: 'Dia sedang duduk.' },
+            { lesson: 11, hanzi: '路上', pinyin: 'lù shang', arti: 'di jalan', contoh: '路上小心。', contohPinyin: 'Lùshang xiǎoxīn.', contohArti: 'Hati-hati di jalan.' },
+            { lesson: 11, hanzi: '慢', pinyin: 'màn', arti: 'lambat', contoh: '请慢一点。', contohPinyin: 'Qǐng màn yīdiǎn.', contohArti: 'Tolong pelan sedikit.' },
+            { lesson: 11, hanzi: '进', pinyin: 'jìn', arti: 'masuk', contoh: '请进。', contohPinyin: 'Qǐng jìn.', contohArti: 'Silakan masuk.' },
+            { lesson: 11, hanzi: '药', pinyin: 'yào', arti: 'obat', contoh: '我要买药。', contohPinyin: 'Wǒ yào mǎi yào.', contohArti: 'Saya mau beli obat.' },
+            { lesson: 11, hanzi: '身体', pinyin: 'shēn tǐ', arti: 'tubuh, kesehatan', contoh: '身体健康。', contohPinyin: 'Shēntǐ jiànkāng.', contohArti: 'Tubuh sehat.' },
+            { lesson: 11, hanzi: '时', pinyin: 'shí', arti: 'waktu, saat', contoh: '那时我还在上学。', contohPinyin: 'Nà shí wǒ hái zài shàngxué.', contohArti: 'Saat itu saya masih sekolah.' },
+            { lesson: 11, hanzi: '最', pinyin: 'zuì', arti: 'paling', contoh: '我最喜欢吃中国菜。', contohPinyin: 'Wǒ zuì xǐhuān chī Zhōngguó cài.', contohArti: 'Saya paling suka makan masakan Cina.' },
+            { lesson: 11, hanzi: '药店', pinyin: 'yào diàn', arti: 'apotek', contoh: '药店在前面。', contohPinyin: 'Yàodiàn zài qiánmiàn.', contohArti: 'Apotek ada di depan.' },
+
+            // ===== 第十二课 =====
+            { lesson: 12, hanzi: '事情', pinyin: 'shì qing', arti: 'hal, urusan', contoh: '我有事情要做。', contohPinyin: 'Wǒ yǒu shìqing yào zuò.', contohArti: 'Saya ada urusan yang harus dilakukan.' },
+            { lesson: 12, hanzi: '晴', pinyin: 'qíng', arti: 'cerah', contoh: '今天天气很晴。', contohPinyin: 'Jīntiān tiānqì hěn qíng.', contohArti: 'Hari ini cuacanya cerah.' },
+            { lesson: 12, hanzi: '正', pinyin: 'zhèng', arti: 'sedang', contoh: '他正吃饭。', contohPinyin: 'Tā zhèng chīfàn.', contohArti: 'Dia sedang makan.' },
+            { lesson: 12, hanzi: '外面', pinyin: 'wài miàn', arti: 'di luar', contoh: '外面很冷。', contohPinyin: 'Wàimiàn hěn lěng.', contohArti: 'Di luar sangat dingin.' },
+            { lesson: 12, hanzi: '阴', pinyin: 'yīn', arti: 'mendung', contoh: '今天天阴。', contohPinyin: 'Jīntiān tiān yīn.', contohArti: 'Hari ini mendung.' },
+            { lesson: 12, hanzi: '从小', pinyin: 'cóng xiǎo', arti: 'sejak kecil', contoh: '我从小喜欢画画。', contohPinyin: 'Wǒ cóngxiǎo xǐhuān huàhuà.', contohArti: 'Sejak kecil saya suka menggambar.' },
+            { lesson: 12, hanzi: '地铁', pinyin: 'dì tiě', arti: 'kereta bawah tanah', contoh: '我坐地铁上班。', contohPinyin: 'Wǒ zuò dìtiě shàngbān.', contohArti: 'Saya naik kereta bawah tanah ke kantor.' },
+            { lesson: 12, hanzi: '楼', pinyin: 'lóu', arti: 'gedung, lantai', contoh: '我家住在三楼。', contohPinyin: 'Wǒ jiā zhù zài sān lóu.', contohArti: 'Rumah saya di lantai tiga.' },
+            { lesson: 12, hanzi: '站', pinyin: 'zhàn', arti: 'stasiun, halte', contoh: '地铁站在哪里？', contohPinyin: 'Dìtiězhàn zài nǎlǐ?', contohArti: 'Di mana stasiun kereta bawah tanah?' },
+            { lesson: 12, hanzi: '小时候', pinyin: 'xiǎo shí hou', arti: 'masa kecil', contoh: '我小时候很喜欢游泳。', contohPinyin: 'Wǒ xiǎoshíhou hěn xǐhuān yóuyǒng.', contohArti: 'Waktu kecil saya sangat suka berenang.' },
+            { lesson: 12, hanzi: '好', pinyin: 'hǎo', arti: 'baik, enak', contoh: '这个菜很好吃。', contohPinyin: 'Zhège cài hěn hǎochī.', contohArti: 'Masakan ini enak.' },
+
+            // ===== 第十三课 =====
+            { lesson: 13, hanzi: '新年', pinyin: 'xīn nián', arti: 'tahun baru', contoh: '新年快乐！', contohPinyin: 'Xīnnián kuàilè!', contohArti: 'Selamat tahun baru!' },
+            { lesson: 13, hanzi: '教', pinyin: 'jiāo', arti: 'mengajar', contoh: '他教我中文。', contohPinyin: 'Tā jiāo wǒ Zhōngwén.', contohArti: 'Dia mengajar saya bahasa Cina.' },
+            { lesson: 13, hanzi: '花', pinyin: 'huā', arti: 'bunga', contoh: '花很漂亮。', contohPinyin: 'Huā hěn piàoliang.', contohArti: 'Bunganya cantik.' },
+            { lesson: 13, hanzi: '希望', pinyin: 'xī wàng', arti: 'berharap', contoh: '我希望你快乐。', contohPinyin: 'Wǒ xīwàng nǐ kuàilè.', contohArti: 'Saya berharap kamu bahagia.' },
+            { lesson: 13, hanzi: '上面', pinyin: 'shàng miàn', arti: 'di atas', contoh: '书在桌子上面。', contohPinyin: 'Shū zài zhuōzi shàngmiàn.', contohArti: 'Buku di atas meja.' },
+            { lesson: 13, hanzi: '洗手间', pinyin: 'xǐ shǒu jiān', arti: 'toilet', contoh: '洗手间在哪里？', contohPinyin: 'Xǐshǒujiān zài nǎlǐ?', contohArti: 'Di mana toilet?' },
+            { lesson: 13, hanzi: '里面', pinyin: 'lǐ miàn', arti: 'di dalam', contoh: '包里面有笔。', contohPinyin: 'Bāo lǐmiàn yǒu bǐ.', contohArti: 'Di dalam tas ada pena.' },
+            { lesson: 13, hanzi: '笔', pinyin: 'bǐ', arti: 'pena, alat tulis', contoh: '这是我的笔。', contohPinyin: 'Zhè shì wǒ de bǐ.', contohArti: 'Ini pena saya.' },
+            { lesson: 13, hanzi: '可能', pinyin: 'kě néng', arti: 'mungkin', contoh: '他可能不来了。', contohPinyin: 'Tā kěnéng bù lái le.', contohArti: 'Dia mungkin tidak datang.' },
+            { lesson: 13, hanzi: '上网', pinyin: 'shàng wǎng', arti: 'online', contoh: '我喜欢上网。', contohPinyin: 'Wǒ xǐhuān shàngwǎng.', contohArti: 'Saya suka online.' },
+            { lesson: 13, hanzi: '那样', pinyin: 'nà yàng', arti: 'seperti itu', contoh: '不要那样做。', contohPinyin: 'Bùyào nàyàng zuò.', contohArti: 'Jangan lakukan seperti itu.' },
+            { lesson: 13, hanzi: '告诉', pinyin: 'gào su', arti: 'memberitahu', contoh: '请告诉我。', contohPinyin: 'Qǐng gàosu wǒ.', contohArti: 'Tolong beritahu saya.' },
+            { lesson: 13, hanzi: '班', pinyin: 'bān', arti: 'kelas', contoh: '我在一班。', contohPinyin: 'Wǒ zài yī bān.', contohArti: 'Saya di kelas satu.' },
+
+            // ===== 第十四课 =====
+            { lesson: 14, hanzi: '站', pinyin: 'zhàn', arti: 'berdiri', contoh: '他站在门口。', contohPinyin: 'Tā zhàn zài ménkǒu.', contohArti: 'Dia berdiri di pintu masuk.' },
+            { lesson: 14, hanzi: '包', pinyin: 'bāo', arti: 'tas', contoh: '我的包很重。', contohPinyin: 'Wǒ de bāo hěn zhòng.', contohArti: 'Tas saya berat.' },
+            { lesson: 14, hanzi: '过年', pinyin: 'guò nián', arti: 'merayakan tahun baru', contoh: '我们一起过年。', contohPinyin: 'Wǒmen yīqǐ guònián.', contohArti: 'Kita merayakan tahun baru bersama.' },
+            { lesson: 14, hanzi: '没意思', pinyin: 'méi yì si', arti: 'tidak menarik', contoh: '这个电影没意思。', contohPinyin: 'Zhège diànyǐng méi yìsi.', contohArti: 'Film ini tidak menarik.' },
+            { lesson: 14, hanzi: '位', pinyin: 'wèi', arti: '(penghitung orang)', contoh: '一位老师。', contohPinyin: 'Yī wèi lǎoshī.', contohArti: 'Seorang guru.' },
+            { lesson: 14, hanzi: '前面', pinyin: 'qián miàn', arti: 'di depan', contoh: '前面有商店。', contohPinyin: 'Qiánmiàn yǒu shāngdiàn.', contohArti: 'Di depan ada toko.' },
+            { lesson: 14, hanzi: '房间', pinyin: 'fáng jiān', arti: 'kamar', contoh: '我的房间很小。', contohPinyin: 'Wǒ de fángjiān hěn xiǎo.', contohArti: 'Kamar saya kecil.' },
+            { lesson: 14, hanzi: '小孩儿', pinyin: 'xiǎo hái r', arti: 'anak kecil', contoh: '那个小孩儿很可爱。', contohPinyin: 'Nàge xiǎoháir hěn kě ài.', contohArti: 'Anak kecil itu lucu.' },
+            { lesson: 14, hanzi: '女孩儿', pinyin: 'nǚ hái r', arti: 'anak perempuan', contoh: '女孩儿在跳舞。', contohPinyin: 'Nǚháir zài tiàowǔ.', contohArti: 'Anak perempuan sedang menari.' },
+            { lesson: 14, hanzi: '姓', pinyin: 'xìng', arti: 'marga, nama keluarga', contoh: '我姓王。', contohPinyin: 'Wǒ xìng Wáng.', contohArti: 'Marga saya Wang.' },
+            { lesson: 14, hanzi: '眼睛', pinyin: 'yǎn jing', arti: 'mata', contoh: '她的眼睛很大。', contohPinyin: 'Tā de yǎnjing hěn dà.', contohArti: 'Matanya besar.' },
+            { lesson: 14, hanzi: '跳舞', pinyin: 'tiào wǔ', arti: 'menari', contoh: '我喜欢跳舞。', contohPinyin: 'Wǒ xǐhuān tiàowǔ.', contohArti: 'Saya suka menari.' },
+
+            // ===== 第十五课 =====
+            { lesson: 15, hanzi: '姓名', pinyin: 'xìng míng', arti: 'nama lengkap', contoh: '请写你的姓名。', contohPinyin: 'Qǐng xiě nǐ de xìngmíng.', contohArti: 'Tolong tulis nama lengkapmu.' },
+            { lesson: 15, hanzi: '出国', pinyin: 'chū guó', arti: 'ke luar negeri', contoh: '我想出国旅游。', contohPinyin: 'Wǒ xiǎng chūguó lǚyóu.', contohArti: 'Saya ingin ke luar negeri.' },
+            { lesson: 15, hanzi: '门票', pinyin: 'mén piào', arti: 'tiket masuk', contoh: '门票多少钱？', contohPinyin: 'Ménpiào duōshao qián?', contohArti: 'Berapa harga tiket masuk?' },
+            { lesson: 15, hanzi: '高中', pinyin: 'gāo zhōng', arti: 'SMA', contoh: '我高中毕业了。', contohPinyin: 'Wǒ gāozhōng bìyè le.', contohArti: 'Saya lulus SMA.' },
+            { lesson: 15, hanzi: '出门', pinyin: 'chū mén', arti: 'keluar rumah', contoh: '他出门了。', contohPinyin: 'Tā chūmén le.', contohArti: 'Dia keluar rumah.' },
+            { lesson: 15, hanzi: '路', pinyin: 'lù', arti: 'jalan', contoh: '这条路很长。', contohPinyin: 'Zhè tiáo lù hěn cháng.', contohArti: 'Jalan ini panjang.' },
+            { lesson: 15, hanzi: '颐和园', pinyin: 'Yí hé yuán', arti: 'Istana Musim Panas', contoh: '颐和园很美。', contohPinyin: 'Yíhéyuán hěn měi.', contohArti: 'Istana Musim Panas sangat indah.' },
+            { lesson: 15, hanzi: '机场', pinyin: 'jī chǎng', arti: 'bandara', contoh: '我去机场接朋友。', contohPinyin: 'Wǒ qù jīchǎng jiē péngyou.', contohArti: 'Saya ke bandara menjemput teman.' },
+            { lesson: 15, hanzi: '机票', pinyin: 'jī piào', arti: 'tiket pesawat', contoh: '我买了机票。', contohPinyin: 'Wǒ mǎi le jīpiào.', contohArti: 'Saya membeli tiket pesawat.' },
+            { lesson: 15, hanzi: '飞', pinyin: 'fēi', arti: 'terbang', contoh: '飞机飞得很高。', contohPinyin: 'Fēijī fēi de hěn gāo.', contohArti: 'Pesawat terbang tinggi.' },
+            { lesson: 15, hanzi: '好像', pinyin: 'hǎo xiàng', arti: 'sepertinya', contoh: '他好像生病了。', contohPinyin: 'Tā hǎoxiàng shēngbìng le.', contohArti: 'Sepertinya dia sakit.' },
+            { lesson: 15, hanzi: '鸟', pinyin: 'niǎo', arti: 'burung', contoh: '树上有鸟。', contohPinyin: 'Shù shàng yǒu niǎo.', contohArti: 'Di pohon ada burung.' }
+        ];
+
+        // ============================================================
+        //  STORAGE — TANDAI KATA
+        // ============================================================
+        const STORAGE_KEY = 'hsk2_marked_words_v1';
+        let markedSet = new Set();
+        try {
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            if (Array.isArray(saved)) markedSet = new Set(saved);
+        } catch (e) { markedSet = new Set(); }
+
+        function wordKey(w) { return `L${w.lesson}::${w.hanzi}`; }
+        function isMarked(w) { return markedSet.has(wordKey(w)); }
+        function saveMarks() {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(markedSet))); } catch (e) {}
+        }
+        function toggleMarkOn(w) {
+            const key = wordKey(w);
+            if (markedSet.has(key)) markedSet.delete(key);
+            else markedSet.add(key);
+            saveMarks();
+        }
+        function getMarkedWords() {
+            return baseData.filter(w => markedSet.has(wordKey(w)));
+        }
+
+        // ============================================================
+        //  PAKET
+        // ============================================================
+        const lessonTitles = {
+            1: '第一课 她请我们吃了北京烤鸭',
+            2: '第二课 还是打车去北大吧',
+            3: '第三课 我想去西安旅游',
+            4: '第四课 你穿红色的很好看',
+            5: '第五课 第一次去中国朋友家',
+            6: '第六课 小雪，生日快乐',
+            7: '第七课 他篮球打得很好',
+            8: '第八课 虽然你忘了，但是我记得',
+            9: '第九课 我去买杯奶茶',
+            10: '第十课 就要开始了',
+            11: '第十一课 我最喜欢吃中国菜',
+            12: '第十二课 这里比北京冷得多',
+            13: '第十三课 我们爱上中文课',
+            14: '第十四课 一个人过年多没意思啊',
+            15: '第十五课 我想再去一次中国'
+        };
+
+        const byLesson = {};
+        baseData.forEach(w => {
+            if (!byLesson[w.lesson]) byLesson[w.lesson] = [];
+            byLesson[w.lesson].push(w);
+        });
+
+        const packages = [];
+        Object.keys(byLesson).map(Number).sort((a, b) => a - b).forEach(num => {
+            packages.push({
+                code: `PKT-${String(num).padStart(2, '0')}`,
+                title: lessonTitles[num] || `Pelajaran ${num}`,
+                words: byLesson[num],
+                type: 'lesson'
+            });
+        });
+
+        // Paket TANDAI (dinamis)
+        const MARK_PACKAGE_INDEX = packages.length;
+        packages.push({
+            code: '★',
+            title: 'Kata yang Ditandai',
+            words: [],  // diisi dinamis
+            type: 'marked'
+        });
+
+        // Paket ALL
+        const ALL_PACKAGE_INDEX = packages.length;
+        packages.push({
+            code: 'ALL',
+            title: `📚 SEMUA KOSAKATA`,
+            words: [...baseData],
+            type: 'all'
+        });
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+        let currentPackageIndex = ALL_PACKAGE_INDEX;
+        let currentData = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        const cardFlipper = document.getElementById('cardFlipper');
+        const cardWrapper = document.getElementById('cardWrapper');
+        const cardFront = document.getElementById('cardFront');
+        const hanziDisplay = document.getElementById('hanziDisplay');
+        const frontIndex = document.getElementById('frontIndex');
+        const pinyinDisplay = document.getElementById('pinyinDisplay');
+        const artiDisplay = document.getElementById('artiDisplay');
+        const contohHanzi = document.getElementById('contohHanzi');
+        const contohPinyin = document.getElementById('contohPinyin');
+        const contohArti = document.getElementById('contohArti');
+        const navCounter = document.getElementById('navCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const randomBtn = document.getElementById('randomBtn');
+        const packageSelect = document.getElementById('packageSelect');
+        const packageCode = document.getElementById('packageCode');
+        const pkgPrev = document.getElementById('pkgPrev');
+        const pkgNext = document.getElementById('pkgNext');
+        const markBtn = document.getElementById('markBtn');
+        const markBadge = document.getElementById('markBadge');
+        const markFilterBtn = document.getElementById('markFilterBtn');
+        const markCountEl = document.getElementById('markCount');
+
+        // ============================================================
+        //  RENDER
+        // ============================================================
+        function renderCard(index) {
+            const data = currentData[index];
+            if (!data) {
+                // Tidak ada data
+                hanziDisplay.textContent = '—';
+                frontIndex.textContent = '0 / 0';
+                navCounter.textContent = '0 / 0';
+                pinyinDisplay.textContent = '';
+                artiDisplay.textContent = '';
+                contohHanzi.textContent = '';
+                contohPinyin.textContent = '';
+                contohArti.textContent = '';
+                markBtn.textContent = '☆';
+                markBtn.classList.remove('marked');
+                cardFront.classList.remove('is-marked');
+                markBadge.style.display = 'none';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                return;
+            }
+            const total = currentData.length;
+
+            hanziDisplay.textContent = data.hanzi;
+            frontIndex.textContent = `${index + 1} / ${total}`;
+            pinyinDisplay.textContent = data.pinyin;
+            artiDisplay.textContent = data.arti;
+
+            // Highlight target word
+            const target = data.hanzi;
+            let contohHtml = data.contoh;
+            if (target && contohHtml) {
+                try {
+                    const escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(escaped, 'g');
+                    contohHtml = contohHtml.replace(regex, '<span class="highlight-word">' + target + '</span>');
+                } catch (err) {}
+            }
+            contohHanzi.innerHTML = contohHtml;
+            contohPinyin.textContent = data.contohPinyin;
+            contohArti.textContent = data.contohArti;
+
+            navCounter.textContent = `${index + 1} / ${total}`;
+            prevBtn.disabled = (index === 0);
+            nextBtn.disabled = (index === total - 1);
+
+            // Status tanda
+            const marked = isMarked(data);
+            markBtn.textContent = marked ? '★' : '☆';
+            markBtn.classList.toggle('marked', marked);
+            cardFront.classList.toggle('is-marked', marked);
+            markBadge.style.display = marked ? 'block' : 'none';
+
+            if (isFlipped) {
+                cardFlipper.classList.remove('flipped');
+                isFlipped = false;
+            }
+        }
+
+        function goTo(index) {
+            if (index < 0 || index >= currentData.length) return;
+            currentIndex = index;
+            renderCard(currentIndex);
+        }
+        function nextCard() { if (currentIndex < currentData.length - 1) goTo(currentIndex + 1); }
+        function prevCard() { if (currentIndex > 0) goTo(currentIndex - 1); }
+
+        // ============================================================
+        //  SHUFFLE
+        // ============================================================
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+            }
+            return arr;
+        }
+        function shuffleCards() {
+            if (currentData.length < 2) return;
+            shuffleArray(currentData);
+            currentIndex = 0;
+            renderCard(0);
+        }
+
+        // ============================================================
+        //  LOAD PACKAGE
+        // ============================================================
+        function loadPackage(index) {
+            if (index < 0 || index >= packages.length) return;
+            currentPackageIndex = index;
+            const pkg = packages[index];
+
+            if (pkg.type === 'marked') {
+                currentData = getMarkedWords();
+                if (currentData.length === 0) {
+                    // Tidak ada kata ditandai — tetap tampilkan pesan kosong
+                    currentData = [];
+                    currentIndex = 0;
+                    isFlipped = false;
+                    cardFlipper.classList.remove('flipped');
+                    renderCard(0);
+                    packageSelect.value = String(currentPackageIndex);
+                    packageCode.textContent = pkg.code;
+                    pkgPrev.disabled = (currentPackageIndex === 0);
+                    pkgNext.disabled = (currentPackageIndex === packages.length - 1);
+                    return;
+                }
+            } else {
+                currentData = pkg.words.slice();
+            }
+
+            shuffleArray(currentData);
+            currentIndex = 0;
+            isFlipped = false;
+            cardFlipper.classList.remove('flipped');
+            renderCard(0);
+
+            packageSelect.value = String(currentPackageIndex);
+            packageCode.textContent = pkg.code;
+            pkgPrev.disabled = (currentPackageIndex === 0);
+            pkgNext.disabled = (currentPackageIndex === packages.length - 1);
+        }
+
+        // ============================================================
+        //  TANDAI — Update UI
+        // ============================================================
+        function updateMarkCountUI() {
+            const count = markedSet.size;
+            markCountEl.textContent = count;
+            // Update label paket MARK di dropdown
+            const markOpt = packageSelect.querySelector(`option[value="${MARK_PACKAGE_INDEX}"]`);
+            if (markOpt) {
+                markOpt.textContent = `★ TANDAI · Kata yang Ditandai (${count})`;
+            }
+            // Style tombol filter
+            markFilterBtn.classList.toggle('active', currentPackageIndex === MARK_PACKAGE_INDEX);
+        }
+
+        function refreshCurrentCardMarkUI() {
+            const data = currentData[currentIndex];
+            if (!data) return;
+            const marked = isMarked(data);
+            markBtn.textContent = marked ? '★' : '☆';
+            markBtn.classList.toggle('marked', marked);
+            cardFront.classList.toggle('is-marked', marked);
+            markBadge.style.display = marked ? 'block' : 'none';
+        }
+
+        function onToggleMark() {
+            const data = currentData[currentIndex];
+            if (!data) return;
+            const wasMarked = isMarked(data);
+            toggleMarkOn(data);
+
+            if (currentPackageIndex === MARK_PACKAGE_INDEX) {
+                // Dalam mode TANDAI — kalau di-unmark, keluarkan dari view
+                if (wasMarked) {
+                    currentData.splice(currentIndex, 1);
+                    if (currentData.length === 0) {
+                        updateMarkCountUI();
+                        renderCard(0); // tampilkan kosong
+                        // Update dropdown & counter
+                        const total = currentData.length;
+                        navCounter.textContent = `0 / 0`;
+                        frontIndex.textContent = `0 / 0`;
+                        prevBtn.disabled = true;
+                        nextBtn.disabled = true;
+                        return;
+                    }
+                    if (currentIndex >= currentData.length) {
+                        currentIndex = currentData.length - 1;
+                    }
+                    renderCard(currentIndex);
+                } else {
+                    refreshCurrentCardMarkUI();
+                }
+            } else {
+                refreshCurrentCardMarkUI();
+            }
+            updateMarkCountUI();
+        }
+
+        // ============================================================
+        //  FLIP
+        // ============================================================
+        function toggleFlip(e) {
+            if (e.target.closest('.nav-btn') || e.target.closest('.nav-bar') ||
+                e.target.closest('.package-select') || e.target.closest('.package-row') ||
+                e.target.closest('.package-btn') || e.target.closest('.mark-btn')) return;
+            cardFlipper.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        }
+
+        // ============================================================
+        //  KEYBOARD
+        // ============================================================
+        function handleKeydown(e) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); nextCard(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevCard(); }
+            else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleFlip(e); }
+            else if (e.key === 'm' || e.key === 'M') { e.preventDefault(); onToggleMark(); }
+        }
+
+        // ============================================================
+        //  DISABLE FUNCTIONS
+        // ============================================================
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if (
+                (e.ctrlKey && ['c','C','x','X','a','A','u','U','s','S','p','P'].indexOf(e.key) !== -1) ||
+                e.key === 'F12' ||
+                (e.ctrlKey && e.key === 'F12') ||
+                (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].indexOf(e.key) !== -1) ||
+                e.key === 'PrintScreen'
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        }, true);
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        packages.forEach((pkg, i) => {
+            const opt = document.createElement('option');
+            opt.value = String(i);
+            if (pkg.type === 'marked') {
+                opt.textContent = `★ TANDAI · Kata yang Ditandai (0)`;
+            } else if (pkg.type === 'all') {
+                opt.textContent = `${pkg.code} · ${pkg.title} (${pkg.words.length})`;
+            } else {
+                opt.textContent = `${pkg.code} · ${pkg.title} (${pkg.words.length})`;
+            }
+            packageSelect.appendChild(opt);
+        });
+
+        packageSelect.addEventListener('change', (e) => {
+            loadPackage(parseInt(e.target.value, 10));
+        });
+        pkgPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentPackageIndex > 0) loadPackage(currentPackageIndex - 1);
+        });
+        pkgNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentPackageIndex < packages.length - 1) loadPackage(currentPackageIndex + 1);
+        });
+
+        // Tombol TANDAI (bintang)
+        markBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            onToggleMark();
+        });
+
+        // Tombol FILTER TANDAI di nav-bar
+        markFilterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentPackageIndex === MARK_PACKAGE_INDEX) {
+                // Kembali ke paket ALL
+                loadPackage(ALL_PACKAGE_INDEX);
+            } else {
+                loadPackage(MARK_PACKAGE_INDEX);
+            }
+        });
+
+        cardWrapper.addEventListener('click', toggleFlip);
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevCard(); });
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextCard(); });
+        randomBtn.addEventListener('click', (e) => { e.stopPropagation(); shuffleCards(); });
+        document.addEventListener('keydown', handleKeydown);
+
+        // Update counter tanda di UI
+        updateMarkCountUI();
+
+        // Buka paket ALL (semua kosakata) sebagai default
+        loadPackage(ALL_PACKAGE_INDEX);
+
+        // ============================================================
+        //  SWIPE
+        // ============================================================
+        let touchStartX = 0;
+        let touchStartY = 0;
+        cardWrapper.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        }, { passive: true });
+
+        cardWrapper.addEventListener('touchend', (e) => {
+            if (touchStartX === 0) return;
+            const touchEnd = e.changedTouches[0];
+            const deltaX = touchEnd.clientX - touchStartX;
+            const deltaY = touchEnd.clientY - touchStartY;
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+                if (deltaX < 0) nextCard();
+                else prevCard();
+            }
+            touchStartX = 0;
+            touchStartY = 0;
+        }, { passive: true });
+
+        console.log(`✅ HSK2 KOSAKATA — ${packages.length} paket siap!`);
+        console.log(`📚 Total kosakata: ${baseData.length}`);
+        console.log(`★ Fitur tandai: klik bintang di kiri atas kartu (shortcut: M)`);
+    </script>
+
+</body>
+</html>
